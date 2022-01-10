@@ -1,8 +1,7 @@
 extern crate brainfuck as bf;
 
 use bf::{
-    Simple,
-    interpreter::Interpreter
+    interpreter::{Interpreter, SimpleFileInterpreter}
 };
 use std::fs::File;
 use std::io;
@@ -23,7 +22,7 @@ fn main() {
     
     let code_file = File::open(matches.value_of("code").unwrap()).expect("Could not open code file");
 
-    let mut bf: Simple = Simple::new(code_file, io::stdin(), io::stdout());
+    let mut bf: SimpleFileInterpreter = SimpleFileInterpreter::new(code_file, io::stdin(), io::stdout());
 
     bf.interpret();
 }

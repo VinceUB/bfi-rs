@@ -7,3 +7,6 @@ edition = "2018"
 
 [dependencies]
 clap = "3.0.4"
+
+[profile.release]
+debug=true
