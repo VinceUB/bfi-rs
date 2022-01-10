@@ -3,6 +3,8 @@ pub mod interpreter{
     pub use interpreter::Interpreter;
     mod simplefileinterpreter;
     pub use simplefileinterpreter::SimpleFileInterpreter;
+    mod simplestringinterpreter;
+    pub use simplestringinterpreter::SimpleStringInterpreter;
 }
 pub mod machine{
     mod machine;

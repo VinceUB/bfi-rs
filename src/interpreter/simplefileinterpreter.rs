@@ -17,10 +17,6 @@ pub struct SimpleFileInterpreter{
 }
 
 impl Interpreter for SimpleFileInterpreter {
-    type CodeStream = File;
-    type OutputStream = Stdout;
-    type InputStream = Stdin;
-
     fn interpret(&mut self){
         let mut codebuf: [u8;1] = [0];
         loop {
@@ -106,8 +102,12 @@ impl SimpleFileInterpreter{
 	}
 	
 	fn end_loop(&mut self){
-		self.code.seek(SeekFrom::Start(
-			self.loop_list.pop().expect("Failed to find last [") - 1
-		)).expect("Failed to go to [");
+        if self.machine.get()!=Wrapping(0) {
+            self.code.seek(SeekFrom::Start(
+                self.loop_list.pop().expect("Failed to find last [") - 1
+            )).expect("Failed to go to [");
+        } else {
+            self.loop_list.pop().expect("Failed to find last [");
+        }
 	}
 }
