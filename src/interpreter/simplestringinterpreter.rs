@@ -87,11 +87,11 @@ impl Iterator for ByteArray{
     type Item = u8;
 
     fn next(&mut self) -> Option<Self::Item>{
-        self.i+=1;
         if self.i>=self.s.len() {
             return None;
         }
-        return Some(self.s[self.i]);
+        self.i += 1;
+        return Some(self.s[self.i-1]);
     }
 }
 
