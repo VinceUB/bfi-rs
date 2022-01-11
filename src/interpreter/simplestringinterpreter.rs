@@ -13,7 +13,7 @@ pub struct SimpleStringInterpreter{
 
 impl Interpreter for SimpleStringInterpreter {
     fn interpret(&mut self) {
-        let mut char_iter = StringIterator::from_string(&self.code);
+        let mut char_iter = ByteArray::from_string(self.code.clone());
         loop{
             let asdf = char_iter.next();
             match asdf{
@@ -54,7 +54,7 @@ impl Interpreter for SimpleStringInterpreter {
                     }*/
                     //char_iter.nth(self.loop_list.pop().expect("Couldn't get last [")-1);
 
-                    char_iter.goto(self.loop_list.pop().expect("Couldn't get last [")-1);
+                    char_iter.seek(self.loop_list.pop().expect("Couldn't get last [")-1);
                 },
                 Some (b'+') => self.machine.inc(),
                 Some (b'-') => self.machine.dec(),
@@ -78,39 +78,39 @@ impl SimpleStringInterpreter {
     }
 }
 
-struct StringIterator {
+struct ByteArray {
     i: usize,
     s: Vec<u8>
 }
 
-impl Iterator for StringIterator{
+impl Iterator for ByteArray{
     type Item = u8;
 
     fn next(&mut self) -> Option<Self::Item>{
+        self.i+=1;
         if self.i>=self.s.len() {
             return None;
         }
-        self.i+=1;
         return Some(self.s[self.i]);
     }
 }
 
-impl StringIterator{
-    fn goto(&mut self, i: usize) {
-        if self.i>=self.s.len() {
-            panic!("tred");
-        }
+impl ByteArray{
+    fn seek(&mut self, i: usize) {
         self.i = i;
+        if self.i>=self.s.len() {
+            panic!("Out of bounds");
+        }
     }
 
     fn index(&self) -> usize{
         self.i
     }
 
-    fn from_string(string: &String) -> Self{
-        Self {
+    fn from_string(string: String) -> Self{
+        ByteArray {
             i: 0,
-            s: string.clone().into_bytes()
+            s: string.into_bytes()
         }
     } 
 }
